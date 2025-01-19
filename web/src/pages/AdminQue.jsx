@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const AdminQue = () => {
@@ -5,6 +6,8 @@ const AdminQue = () => {
 
     return (
         <div className="container text-white text-2xl">
+            <Toaster position="top-right" />
+
             {/* Options */}
             <div className="flex justify-center items-center w-full gap-6 mt-5">
                 <div className='px-6 py-2 text-lg font-semibold text-white duration-200' onClick={() => {navigate('/admin-category')}}>Category</div>
