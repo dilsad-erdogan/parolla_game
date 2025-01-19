@@ -11,7 +11,6 @@ const AdminCat = () => {
   const loadCategories = async () => {
     try {
         const data = await fetchCategory();
-        console.log("Loaded categories:", data);
         setCategories(data);
     } catch (error) {
         console.error("Error loading categories:", error.message);
