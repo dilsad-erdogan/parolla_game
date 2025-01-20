@@ -22,7 +22,6 @@ const AdminCat = () => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
         await deleteCategory(id);
-        toast.success("Category deleted successfully!");
         loadCategories();
       } catch (error) {
         toast.error("Failed to delete category: ", error);
@@ -48,15 +47,17 @@ const AdminCat = () => {
       <Toaster position="top-right" />
 
       {/* Options */}
-      <div className="flex justify-center items-center w-full gap-6 mt-5">
+      <div className="flex justify-center items-center w-full gap-6 mt-5 border-b">
         <div className='px-6 py-2 text-2xl font-semibold text-white duration-200'>Category</div>
         <div className='px-6 py-2 text-lg font-semibold text-white duration-200' onClick={() => {navigate('/admin-questions')}}>Question</div>
       </div>
 
       {/* Add Category */}
-      <div className="flex items-center justify-center gap-5 w-full mt-10">
-        <input type="text" placeholder="Enter new category" className="bg-gray-700 border p-2 rounded-lg" value={name} onChange={(e) => {setName(e.target.value)}} />
-        <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded" onClick={saveName}>Add Name</button>
+      <div className="mt-10 w-full flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-2/4">
+          <input type="text" placeholder="Enter new category" className="bg-gray-700 border p-2 rounded-lg" value={name} onChange={(e) => {setName(e.target.value)}} />
+          <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg" onClick={saveName}>Add Name</button>
+        </div>
       </div>
 
       {/* Table */}
