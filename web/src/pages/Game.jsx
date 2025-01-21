@@ -13,9 +13,9 @@ const Game = () => {
             setLoading(true);
             const categories = await fetchCategory();
             const randomQuestions = [];
+            const questionCollection = collection(firestore, "question");
 
             for (const category of categories) {
-                const questionCollection = collection(firestore, "question");
                 const q = query(questionCollection, where("cat_id", "==", category.id));
                 const querySnapshot = await getDocs(q);
 
@@ -27,9 +27,15 @@ const Game = () => {
 
                     // Rastgele bir soru seç
                     const randomQuestion = questionsInCategory[Math.floor(Math.random() * questionsInCategory.length)];
-                    randomQuestions.push(randomQuestion);
+                    randomQuestions.push({
+                        ...randomQuestion,
+                        categoryName: category.name, // Kategori adını ekle
+                    });
                 }
             }
+
+            // Soruları kategorilere göre alfabetik sırayla sıralama
+            randomQuestions.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
 
             setQuestions(randomQuestions);
         } catch (error) {
@@ -52,13 +58,13 @@ const Game = () => {
         <div className="container text-white text-2xl">
             <Toaster position="top-right" />
 
-            <h1 className="text-2xl font-bold mb-4">Game</h1>
+            <h1 className="text-4xl mt-4 text-center font-bold mb-4">Parolla</h1>
             {questions.length > 0 ? (
                 <div>
                     {questions.map((question) => (
                         <div key={question.id} className="mb-4">
                             <h2 className="text-lg font-semibold">
-                                Category: {question.cat_id}
+                                Category: {question.categoryName}
                             </h2>
                             <p>Question: {question.question}</p>
                             <p>Answer: {question.answer}</p>
@@ -69,7 +75,7 @@ const Game = () => {
                 <p>No questions available.</p>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Game
+export default Game;
