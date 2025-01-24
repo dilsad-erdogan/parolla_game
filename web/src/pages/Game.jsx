@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { fetchCategory } from "../firebase/category";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
+import Screen from "../Components/Screen";
+import { fetchQuestions } from "../redux/questionSlice";
 
 const Game = () => {
-    const [questions, setQuestions] = useState([]);
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
     const fetchRandomQuestions = async () => {
@@ -37,7 +40,7 @@ const Game = () => {
             // Soruları kategorilere göre alfabetik sırayla sıralama
             randomQuestions.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
 
-            setQuestions(randomQuestions);
+            dispatch(fetchQuestions(randomQuestions));
         } catch (error) {
             console.error("Error fetching random questions:", error.message);
             toast.error("Failed to load questions.");
@@ -59,21 +62,7 @@ const Game = () => {
             <Toaster position="top-right" />
 
             <h1 className="text-4xl mt-4 text-center font-bold mb-4">Parolla</h1>
-            {questions.length > 0 ? (
-                <div>
-                    {questions.map((question) => (
-                        <div key={question.id} className="mb-4">
-                            <h2 className="text-lg font-semibold">
-                                Category: {question.categoryName}
-                            </h2>
-                            <p>Question: {question.question}</p>
-                            <p>Answer: {question.answer}</p>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <p>No questions available.</p>
-            )}
+            <Screen />
         </div>
     );
 };
